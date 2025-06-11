@@ -240,7 +240,7 @@
     <div class="container">
         <div class="header">
             <h1>?? Do?ruluk Tablosu Denetleyicisi</h1>
-            <p>Önermeler mant???nda formüllerinizi test edin</p>
+            <p>Ã–nermeler mant???nda formÃ¼llerinizi test edin</p>
         </div>
         
         <div class="content">
@@ -249,16 +249,16 @@
                 <div class="symbol-list">
                     <div class="symbol-item"><strong>&&</strong> - VE (?)</div>
                     <div class="symbol-item"><strong>||</strong> - VEYA (?)</div>
-                    <div class="symbol-item"><strong>!</strong> - DE??L (¬)</div>
+                    <div class="symbol-item"><strong>!</strong> - DE??L (Â¬)</div>
                     <div class="symbol-item"><strong>-></strong> - KO?ULLU (?)</div>
-                    <div class="symbol-item"><strong><-></strong> - ÇIFT KO?ULLU (?)</div>
+                    <div class="symbol-item"><strong><-></strong> - Ã‡IFT KO?ULLU (?)</div>
                 </div>
             </div>
 
             <div class="input-section">
                 <div class="input-group">
-                    <label for="formula">Mant?k Formülü:</label>
-                    <input type="text" id="formula" placeholder="Örnek: P && Q || !R" />
+                    <label for="formula">Mant?k FormÃ¼lÃ¼:</label>
+                    <input type="text" id="formula" placeholder="Ã–rnek: P && Q || !R" />
                 </div>
                 
                 <div class="button-group">
@@ -272,7 +272,7 @@
     </div>
 
     <script>
-        // Mant?k formüllerini de?erlendirme fonksiyonu
+        // Mant?k formÃ¼llerini de?erlendirme fonksiyonu
         function evaluateFormula(formula, values) {
             let expr = formula;
             
@@ -282,24 +282,24 @@
                 expr = expr.replace(regex, values[variable].toString());
             }
             
-            // Mant?k operatörlerini JavaScript operatörlerine çevir
-            expr = expr.replace(/<->/g, '==='); // Çift ko?ullu
+            // Mant?k operatÃ¶rlerini JavaScript operatÃ¶rlerine Ã§evir
+            expr = expr.replace(/<->/g, '==='); // Ã‡ift ko?ullu
             expr = expr.replace(/->/g, '||!');   // Ko?ullu: A -> B = !A || B
             expr = expr.replace(/&&/g, '&&');    // VE
             expr = expr.replace(/\|\|/g, '||');  // VEYA
             expr = expr.replace(/!/g, '!');      // DE??L
             
-            // Ko?ullu operatörü düzelt: A||!B -> (!A || B)
+            // Ko?ullu operatÃ¶rÃ¼ dÃ¼zelt: A||!B -> (!A || B)
             expr = expr.replace(/(\w+)\|\|!(\w+)/g, '(!$1 || $2)');
             
             try {
                 return eval(expr);
             } catch(e) {
-                throw new Error('Formül de?erlendirilemedi');
+                throw new Error('FormÃ¼l de?erlendirilemedi');
             }
         }
 
-        // Formülden de?i?kenleri ç?kar
+        // FormÃ¼lden de?i?kenleri Ã§?kar
         function extractVariables(formula) {
             const variables = new Set();
             const matches = formula.match(/[A-Za-z]\w*/g);
@@ -319,7 +319,7 @@
             const resultsDiv = document.getElementById('results');
             
             if (!formula) {
-                resultsDiv.innerHTML = '<div class="feedback error">?? Lütfen bir formül girin!</div>';
+                resultsDiv.innerHTML = '<div class="feedback error">?? LÃ¼tfen bir formÃ¼l girin!</div>';
                 return;
             }
 
@@ -327,7 +327,7 @@
                 const variables = extractVariables(formula);
                 
                 if (variables.length === 0) {
-                    resultsDiv.innerHTML = '<div class="feedback error">?? Formülde geçerli de?i?ken bulunamad?!</div>';
+                    resultsDiv.innerHTML = '<div class="feedback error">?? FormÃ¼lde geÃ§erli de?i?ken bulunamad?!</div>';
                     return;
                 }
 
@@ -338,9 +338,9 @@
                 variables.forEach(variable => {
                     tableHTML += `<th>${variable}</th>`;
                 });
-                tableHTML += `<th>Sonuç</th></tr></thead><tbody>`;
+                tableHTML += `<th>SonuÃ§</th></tr></thead><tbody>`;
                 
-                // Tüm kombinasyonlar için sat?rlar
+                // TÃ¼m kombinasyonlar iÃ§in sat?rlar
                 let allTrue = true;
                 let allFalse = true;
                 
@@ -348,7 +348,7 @@
                     tableHTML += '<tr>';
                     const values = {};
                     
-                    // Her de?i?ken için de?er ata
+                    // Her de?i?ken iÃ§in de?er ata
                     for (let j = 0; j < variables.length; j++) {
                         const value = Boolean(i & (1 << (variables.length - 1 - j)));
                         values[variables[j]] = value;
@@ -357,7 +357,7 @@
                         tableHTML += `<td class="${className}">${displayValue}</td>`;
                     }
                     
-                    // Formülü de?erlendir
+                    // FormÃ¼lÃ¼ de?erlendir
                     const result = evaluateFormula(formula, values);
                     const displayResult = result ? 'T' : 'F';
                     const resultClass = result ? 'true-value' : 'false-value';
@@ -371,20 +371,20 @@
                 
                 tableHTML += '</tbody></table></div>';
                 
-                // Sonuç analizi
+                // SonuÃ§ analizi
                 let analysis = '';
                 if (allTrue) {
-                    analysis = '<div class="feedback success">? Bu formül bir <strong>totoloji</strong>dir - her durumda do?rudur!</div>';
+                    analysis = '<div class="feedback success">? Bu formÃ¼l bir <strong>totoloji</strong>dir - her durumda do?rudur!</div>';
                 } else if (allFalse) {
-                    analysis = '<div class="feedback error">? Bu formül bir <strong>çeli?ki</strong>dir - her durumda yanl??t?r!</div>';
+                    analysis = '<div class="feedback error">? Bu formÃ¼l bir <strong>Ã§eli?ki</strong>dir - her durumda yanl??t?r!</div>';
                 } else {
-                    analysis = '<div class="feedback" style="background: linear-gradient(45deg, #FF9800, #FFC107); color: white;">?? Bu formül <strong>ko?ullu geçerli</strong>dir - baz? durumlarda do?ru, baz?lar?nda yanl??t?r.</div>';
+                    analysis = '<div class="feedback" style="background: linear-gradient(45deg, #FF9800, #FFC107); color: white;">?? Bu formÃ¼l <strong>ko?ullu geÃ§erli</strong>dir - baz? durumlarda do?ru, baz?lar?nda yanl??t?r.</div>';
                 }
                 
                 resultsDiv.innerHTML = analysis + tableHTML;
                 
             } catch (error) {
-                resultsDiv.innerHTML = `<div class="feedback error">? Hata: ${error.message}<br><small>Formül sözdizimini kontrol edin.</small></div>`;
+                resultsDiv.innerHTML = `<div class="feedback error">? Hata: ${error.message}<br><small>FormÃ¼l sÃ¶zdizimini kontrol edin.</small></div>`;
             }
         }
 
@@ -394,14 +394,14 @@
             document.getElementById('results').innerHTML = '';
         }
 
-        // Enter tu?u ile formül gönderme
+        // Enter tu?u ile formÃ¼l gÃ¶nderme
         document.getElementById('formula').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 generateTruthTable();
             }
         });
 
-        // Sayfa yüklendi?inde örnek göster
+        // Sayfa yÃ¼klendi?inde Ã¶rnek gÃ¶ster
         window.addEventListener('load', function() {
             document.getElementById('formula').value = 'P && Q || !R';
         });

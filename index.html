@@ -3,15 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DoÄŸruluk Tablosu Denetleyicisi</title>
+    <title>Do?ruluk Tablosu Denetleyicisi</title>
     <style>
-        /* (CSS stilleri buraya gelecek - metin Ã§ok uzun olduÄŸu iÃ§in burada kÄ±saltÄ±ldÄ±) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e3f2fd;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-1px);
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .truth-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 1rem;
+        }
+
+        th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .true-value {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .false-value {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        .feedback {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .feedback.success {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .feedback.error {
+            background: linear-gradient(45deg, #F44336, #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+
+        .symbols {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .symbols h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+
+        .symbol-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .symbol-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #ffcc02;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                min-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- (HTML gÃ¶vde iÃ§eriÄŸi burada olacak - daha Ã¶nce verdiÄŸin kod tamamen buraya eklendi) -->
+    <div class="container">
+        <div class="header">
+            <h1>?? Do?ruluk Tablosu Denetleyicisi</h1>
+            <p>Önermeler mant???nda formüllerinizi test edin</p>
+        </div>
+        
+        <div class="content">
+            <div class="symbols">
+                <h3>?? Kullan?labilir Semboller</h3>
+                <div class="symbol-list">
+                    <div class="symbol-item"><strong>&&</strong> - VE (?)</div>
+                    <div class="symbol-item"><strong>||</strong> - VEYA (?)</div>
+                    <div class="symbol-item"><strong>!</strong> - DE??L (¬)</div>
+                    <div class="symbol-item"><strong>-></strong> - KO?ULLU (?)</div>
+                    <div class="symbol-item"><strong><-></strong> - ÇIFT KO?ULLU (?)</div>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="formula">Mant?k Formülü:</label>
+                    <input type="text" id="formula" placeholder="Örnek: P && Q || !R" />
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateTruthTable()">Do?ruluk Tablosu Olu?tur</button>
+                    <button class="btn-secondary" onclick="clearAll()">Temizle</button>
+                </div>
+            </div>
+
+            <div id="results" class="results-section"></div>
+        </div>
+    </div>
+
     <script>
-        // JavaScript kodlarÄ± burada olacak - daha Ã¶nce verdiÄŸin kod eklendi
+        // Mant?k formüllerini de?erlendirme fonksiyonu
+        function evaluateFormula(formula, values) {
+            let expr = formula;
+            
+            // De?i?kenleri de?erlerle de?i?tir
+            for (let variable in values) {
+                const regex = new RegExp(`\\b${variable}\\b`, 'g');
+                expr = expr.replace(regex, values[variable].toString());
+            }
+            
+            // Mant?k operatörlerini JavaScript operatörlerine çevir
+            expr = expr.replace(/<->/g, '==='); // Çift ko?ullu
+            expr = expr.replace(/->/g, '||!');   // Ko?ullu: A -> B = !A || B
+            expr = expr.replace(/&&/g, '&&');    // VE
+            expr = expr.replace(/\|\|/g, '||');  // VEYA
+            expr = expr.replace(/!/g, '!');      // DE??L
+            
+            // Ko?ullu operatörü düzelt: A||!B -> (!A || B)
+            expr = expr.replace(/(\w+)\|\|!(\w+)/g, '(!$1 || $2)');
+            
+            try {
+                return eval(expr);
+            } catch(e) {
+                throw new Error('Formül de?erlendirilemedi');
+            }
+        }
+
+        // Formülden de?i?kenleri ç?kar
+        function extractVariables(formula) {
+            const variables = new Set();
+            const matches = formula.match(/[A-Za-z]\w*/g);
+            if (matches) {
+                matches.forEach(match => {
+                    if (match !== 'true' && match !== 'false') {
+                        variables.add(match);
+                    }
+                });
+            }
+            return Array.from(variables).sort();
+        }
+
+        // Do?ruluk tablosu olu?tur
+        function generateTruthTable() {
+            const formula = document.getElementById('formula').value.trim();
+            const resultsDiv = document.getElementById('results');
+            
+            if (!formula) {
+                resultsDiv.innerHTML = '<div class="feedback error">?? Lütfen bir formül girin!</div>';
+                return;
+            }
+
+            try {
+                const variables = extractVariables(formula);
+                
+                if (variables.length === 0) {
+                    resultsDiv.innerHTML = '<div class="feedback error">?? Formülde geçerli de?i?ken bulunamad?!</div>';
+                    return;
+                }
+
+                const numRows = Math.pow(2, variables.length);
+                let tableHTML = '<div class="truth-table"><table><thead><tr>';
+                
+                // Ba?l?k sat?r?
+                variables.forEach(variable => {
+                    tableHTML += `<th>${variable}</th>`;
+                });
+                tableHTML += `<th>Sonuç</th></tr></thead><tbody>`;
+                
+                // Tüm kombinasyonlar için sat?rlar
+                let allTrue = true;
+                let allFalse = true;
+                
+                for (let i = 0; i < numRows; i++) {
+                    tableHTML += '<tr>';
+                    const values = {};
+                    
+                    // Her de?i?ken için de?er ata
+                    for (let j = 0; j < variables.length; j++) {
+                        const value = Boolean(i & (1 << (variables.length - 1 - j)));
+                        values[variables[j]] = value;
+                        const displayValue = value ? 'T' : 'F';
+                        const className = value ? 'true-value' : 'false-value';
+                        tableHTML += `<td class="${className}">${displayValue}</td>`;
+                    }
+                    
+                    // Formülü de?erlendir
+                    const result = evaluateFormula(formula, values);
+                    const displayResult = result ? 'T' : 'F';
+                    const resultClass = result ? 'true-value' : 'false-value';
+                    tableHTML += `<td class="${resultClass}">${displayResult}</td>`;
+                    
+                    if (!result) allTrue = false;
+                    if (result) allFalse = false;
+                    
+                    tableHTML += '</tr>';
+                }
+                
+                tableHTML += '</tbody></table></div>';
+                
+                // Sonuç analizi
+                let analysis = '';
+                if (allTrue) {
+                    analysis = '<div class="feedback success">? Bu formül bir <strong>totoloji</strong>dir - her durumda do?rudur!</div>';
+                } else if (allFalse) {
+                    analysis = '<div class="feedback error">? Bu formül bir <strong>çeli?ki</strong>dir - her durumda yanl??t?r!</div>';
+                } else {
+                    analysis = '<div class="feedback" style="background: linear-gradient(45deg, #FF9800, #FFC107); color: white;">?? Bu formül <strong>ko?ullu geçerli</strong>dir - baz? durumlarda do?ru, baz?lar?nda yanl??t?r.</div>';
+                }
+                
+                resultsDiv.innerHTML = analysis + tableHTML;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="feedback error">? Hata: ${error.message}<br><small>Formül sözdizimini kontrol edin.</small></div>`;
+            }
+        }
+
+        // Temizle
+        function clearAll() {
+            document.getElementById('formula').value = '';
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Enter tu?u ile formül gönderme
+        document.getElementById('formula').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateTruthTable();
+            }
+        });
+
+        // Sayfa yüklendi?inde örnek göster
+        window.addEventListener('load', function() {
+            document.getElementById('formula').value = 'P && Q || !R';
+        });
     </script>
 </body>
 </html>
